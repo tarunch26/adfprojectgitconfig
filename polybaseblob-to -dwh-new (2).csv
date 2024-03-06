@@ -1,0 +1,93 @@
+Step-1
+
+create master key encryption by password='vs@anu@123' --- Creating a New Password
+
+ Step-2
+
+create database scoped credential ploybase   ---Creating a New Database
+
+with
+
+identity='avinash', -----You can give a any name
+
+secret='bbTFkPuFhHNjpKx/qUuLJWi2yB+kRQvzyE4gQbcbrEFShx2Uaz7Aslav9tPPt53guMAOcAU3e9XA+AStv2V5JA==' --------it is of secrete  of  blob storage available in the ACCESS KEY
+
+ Step-3
+
+create external data source ploy_source ---creating a external data source
+
+with
+
+(
+
+type=hadoop,
+
+location='wasbs://input@blobdwh123venu123anu.blob.core.windows.net', -----(in this eclasess456 is a Container name and eclasess123 is a Blob storage name)
+
+credential=ploybase  --------Step2
+
+)
+
+ 
+
+ 
+
+ Step-4
+
+create external file format file1  -- creating a external format
+
+with(
+
+format_type=delimitedtext,
+
+format_options(field_terminator=',',first_row=2))
+
+ 
+
+Step-5
+
+create external table product1
+
+(
+
+eno int,
+
+ename varchar(10),
+
+esal varchar(10))
+
+with(
+
+data_source=ploy_source, ---Step3
+
+file_format=file1,---------step4
+
+location='/2023/')-----Foldername
+
+
+
+select * from product1
+
+
+
+Step-6
+
+CREATE TABLE [dbo].[DimProduct] 
+
+WITH (DISTRIBUTION = HASH([eno] ) )  ------Distribution method above  2gb
+
+AS SELECT * FROM [dbo].[product1] ;
+
+
+CREATE TABLE [dbo].[DimProduct1] 
+
+WITH (DISTRIBUTION = Round_robin )  ------Distribution method below 2 gb
+
+AS SELECT * FROM [dbo].[product1] ;
+
+CREATE TABLE [dbo].[DimProduct2] 
+
+WITH (DISTRIBUTION = REPLICATE )  ------Distribution method less than 500 rows  or 10 mb
+
+AS SELECT * FROM [dbo].[product1] ;
+
