@@ -1,0 +1,9 @@
+{
+	"name": "Tardfazure",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "210fe039-0409-49c8-86d9-6ce4292ca044",
+		"tenantId": "ca3ebbc4-c243-4516-ad38-6fbbfa4a8594"
+	}
+}
